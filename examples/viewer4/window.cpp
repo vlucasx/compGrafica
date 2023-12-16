@@ -48,7 +48,7 @@ void Window::onCreate() {
   }
 
   // Load default model
-  loadModel(assetsPath + "roman_lamp.obj");
+  loadModel(assetsPath + "banana.obj");
   m_mappingMode = 3; // "From mesh" option
 
   // Initial trackball spin
@@ -61,7 +61,7 @@ void Window::loadModel(std::string_view path) {
 
   m_model.destroy();
 
-  m_model.loadDiffuseTexture(assetsPath + "maps/pattern.png");
+  m_model.loadDiffuseTexture(assetsPath + "maps/textura_banana.jpg");
   m_model.loadObj(path);
   m_model.setupVAO(m_programs.at(m_currentProgramIndex));
   m_trianglesToDraw = m_model.getNumTriangles();
