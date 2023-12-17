@@ -27,12 +27,11 @@ private:
   };
 
   Banana banana1, banana2;
-  
 // ========================================
 
   glm::ivec2 m_viewportSize{};
 
-  Model m_model;
+  Model m_model, modelo_banana;
   int m_trianglesToDraw{};
 
   TrackBall m_trackBallModel;
