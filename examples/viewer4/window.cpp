@@ -115,18 +115,23 @@ void Window::onPaint() {
 // =======================================================================================================
 
   // Set uniform variables for the current model
-//  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
 
 
-  // Draw white bunny
   glm::mat4 model{1.0f};
-  model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.5f));
-  model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0, 1, 0));
-  model = glm::scale(model, glm::vec3(1.0f));
+// Altera a matriz para fora do trackball:
+  glm::mat4 modelo{1.0f};
+  modelo = glm::translate(modelo, glm::vec3(0.0f, 0.0f, -3.5f));
+  modelo = glm::rotate(modelo, glm::radians(45.0f), glm::vec3(0, 1, 0));
+  modelo = glm::scale(modelo, glm::vec3(1.0f));
+
+// Desenha deslocado:
+  //m_modelMatrixLocation = abcg::glGetUniformLocation(program, "modelMatrix");
+  //abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &modelo[0][0]);
+
+// Desenha no trackball:
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
   abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
 
-  m_modelMatrixLocation = abcg::glGetUniformLocation(program, "modelMatrix");
-  abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
 
 // =======================================================================================================
 
