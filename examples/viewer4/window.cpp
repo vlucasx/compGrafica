@@ -112,8 +112,23 @@ void Window::onPaint() {
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
 
+// =======================================================================================================
+
   // Set uniform variables for the current model
-  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+//  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+
+
+  // Draw white bunny
+  glm::mat4 model{1.0f};
+  model = glm::translate(model, glm::vec3(0.0f, 0.0f, -3.5f));
+  model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0, 1, 0));
+  model = glm::scale(model, glm::vec3(1.0f));
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
+
+  m_modelMatrixLocation = abcg::glGetUniformLocation(program, "modelMatrix");
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
+
+// =======================================================================================================
 
   auto const modelViewMatrix{glm::mat3(m_viewMatrix * m_modelMatrix)};
   auto const normalMatrix{glm::inverseTranspose(modelViewMatrix)};

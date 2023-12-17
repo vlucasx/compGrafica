@@ -16,6 +16,20 @@ protected:
   void onDestroy() override;
 
 private:
+
+// ========================================
+
+  GLint m_modelMatrixLocation{};
+
+    struct Banana {
+    glm::vec3 m_position{};
+    glm::vec3 m_rotationAxis{};
+  };
+
+  Banana banana1, banana2;
+  
+// ========================================
+
   glm::ivec2 m_viewportSize{};
 
   Model m_model;
