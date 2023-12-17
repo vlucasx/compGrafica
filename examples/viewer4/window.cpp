@@ -112,7 +112,17 @@ void Window::onPaint() {
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
 
-// =======================================================================================================
+
+  auto const modelViewMatrix{glm::mat3(m_viewMatrix * m_modelMatrix)};
+  auto const normalMatrix{glm::inverseTranspose(modelViewMatrix)};
+  abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
+
+  abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
+  abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
+  abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
+  abcg::glUniform1f(shininessLoc, m_shininess);
+
+// ======== Desloca banana ===============================================================================
 
   // Set uniform variables for the current model
 
@@ -124,26 +134,17 @@ void Window::onPaint() {
   modelo = glm::rotate(modelo, glm::radians(45.0f), glm::vec3(0, 1, 0));
   modelo = glm::scale(modelo, glm::vec3(1.0f));
 
+// =======================================================================================================
+
+
 // Desenha deslocado:
-  //m_modelMatrixLocation = abcg::glGetUniformLocation(program, "modelMatrix");
-  //abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &modelo[0][0]);
+  m_modelMatrixLocation2 = abcg::glGetUniformLocation(program, "modelMatrix");
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
+  m_model.render(m_trianglesToDraw);
 
 // Desenha no trackball:
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
   abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
-
-
-// =======================================================================================================
-
-  auto const modelViewMatrix{glm::mat3(m_viewMatrix * m_modelMatrix)};
-  auto const normalMatrix{glm::inverseTranspose(modelViewMatrix)};
-  abcg::glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, &normalMatrix[0][0]);
-
-  abcg::glUniform4fv(KaLoc, 1, &m_Ka.x);
-  abcg::glUniform4fv(KdLoc, 1, &m_Kd.x);
-  abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
-  abcg::glUniform1f(shininessLoc, m_shininess);
-
   m_model.render(m_trianglesToDraw);
 
   abcg::glUseProgram(0);

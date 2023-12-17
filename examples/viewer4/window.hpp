@@ -20,6 +20,8 @@ private:
 // ========================================
 
   GLint m_modelMatrixLocation{};
+  GLint m_modelMatrixLocation2{};
+
 
     struct Banana {
     glm::vec3 m_position{};
