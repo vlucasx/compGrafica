@@ -30,6 +30,16 @@ void Window::onEvent(SDL_Event const &event) {
     m_zoom += (event.wheel.y > 0 ? -1.0f : 1.0f) / 5.0f;
     m_zoom = glm::clamp(m_zoom, -1.5f, 1.0f);
   }
+
+
+  if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
+      banana1.travado = false;
+  }
+  //if (event.type == SDL_KEYUP) {
+   // if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
+    //  m_dollySpeed = 0.0f;
+  //}
 }
 
 void Window::onCreate() {
@@ -158,7 +168,9 @@ void Window::onUpdate() {
 
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
 
+  if (banana1.travado == false) {
   banana1.m_position.z = banana1.m_position.z - deltaTime;
+  }
 
   m_modelMatrix = m_trackBallModel.getRotation();
 

@@ -26,6 +26,7 @@ private:
     struct Banana {
     glm::vec3 m_position{};
     glm::vec3 m_rotationAxis{};
+    bool travado = true;
   };
 
   Banana banana1, banana2;
