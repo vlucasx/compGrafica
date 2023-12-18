@@ -35,9 +35,9 @@ void Window::onEvent(SDL_Event const &event) {
   if (event.type == SDL_KEYDOWN) {
     if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
       banana1.travado = false;
-  }
+}
   //if (event.type == SDL_KEYUP) {
-   // if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
+    // if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
     //  m_dollySpeed = 0.0f;
   //}
 }
@@ -46,7 +46,7 @@ void Window::onCreate() {
 
   glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
   banana1.m_position = posicaoInicial;
-
+  
   auto const assetsPath{abcg::Application::getAssetsPath()};
 
   abcg::glClearColor(0, 0, 0, 1);
@@ -151,9 +151,16 @@ void Window::onPaint() {
 // =======================================================================================================
 
 
-// Desenha deslocado:
+// Desenha deslocado: (apenas se a banana estiver na origem, "travada")
+  if (banana1.travado == false) {
   m_modelMatrixLocation2 = abcg::glGetUniformLocation(program, "modelMatrix");
   abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
+  }
+  else {
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
+  }
+
   m_model.render(m_trianglesToDraw);
 
 // Desenha no trackball:
@@ -170,11 +177,17 @@ void Window::onUpdate() {
 
   if (banana1.m_position.z <= -6.0) {
       banana1.m_position.z = 0.0;
+      banana1.m_position.y = 0.0;
       banana1.travado = true;
   }
 
   if (banana1.travado == false) {
   banana1.m_position.z = banana1.m_position.z - deltaTime;
+  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime;
+  }
+  
+  else {
+    m_modelMatrixLocation2 = m_modelMatrixLocation;
   }
 
   m_modelMatrix = m_trackBallModel.getRotation();
