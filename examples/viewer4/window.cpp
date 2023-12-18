@@ -33,6 +33,10 @@ void Window::onEvent(SDL_Event const &event) {
 }
 
 void Window::onCreate() {
+
+  glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
+  banana1.m_position = posicaoInicial;
+
   auto const assetsPath{abcg::Application::getAssetsPath()};
 
   abcg::glClearColor(0, 0, 0, 1);
@@ -129,8 +133,8 @@ void Window::onPaint() {
 
   glm::mat4 model{1.0f};
 // Altera a matriz para fora do trackball:
-  glm::mat4 modelo{1.0f};
-  modelo = glm::translate(modelo, glm::vec3(0.0f, 0.0f, -3.5f));
+  glm::mat4 modelo{1.0f};  
+  modelo = glm::translate(modelo, banana1.m_position); // -3.5f no z (ultimo termo do vetor)
   modelo = glm::rotate(modelo, glm::radians(45.0f), glm::vec3(0, 1, 0));
   modelo = glm::scale(modelo, glm::vec3(1.0f));
 
@@ -151,6 +155,11 @@ void Window::onPaint() {
 }
 
 void Window::onUpdate() {
+
+  auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
+
+  banana1.m_position.z = banana1.m_position.z - deltaTime;
+
   m_modelMatrix = m_trackBallModel.getRotation();
 
   m_viewMatrix =
