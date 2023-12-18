@@ -168,6 +168,11 @@ void Window::onUpdate() {
 
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
 
+  if (banana1.m_position.z <= -6.0) {
+      banana1.m_position.z = 0.0;
+      banana1.travado = true;
+  }
+
   if (banana1.travado == false) {
   banana1.m_position.z = banana1.m_position.z - deltaTime;
   }
