@@ -16,10 +16,27 @@ protected:
   void onDestroy() override;
 
 private:
+
+// ========================================
+
+  GLint m_modelMatrixLocation{};
+  GLint m_modelMatrixLocation2{};
+
+
+    struct Banana {
+    glm::vec3 m_position{};
+    glm::vec3 m_rotationAxis{};
+    bool travado = true;
+  };
+
+  Banana banana1, banana2;
+  // ========================================
+
   glm::ivec2 m_viewportSize{};
 
-  Model m_model;
+  Model m_model, modelo_banana;
   int m_trianglesToDraw{};
+  int m_trianglesToDraw2{};
 
   TrackBall m_trackBallModel;
   TrackBall m_trackBallLight;
@@ -38,6 +55,7 @@ private:
   // Mapping mode
   // 0: triplanar; 1: cylindrical; 2: spherical; 3: from mesh
   int m_mappingMode{};
+  int m_mappingMode2{};
 
   // Light and material properties
   glm::vec4 m_lightDir{-1.0f, -1.0f, -1.0f, 0.0f};
@@ -49,7 +67,17 @@ private:
   glm::vec4 m_Ks{};
   float m_shininess{};
 
-  void loadModel(std::string_view path);
+  glm::vec4 m_lightDir2{-1.0f, -1.0f, -1.0f, 0.0f};
+  glm::vec4 m_Ia2{1.0f};
+  glm::vec4 m_Id2{1.0f};
+  glm::vec4 m_Is2{1.0f};
+  glm::vec4 m_Ka2{};
+  glm::vec4 m_Kd2{};
+  glm::vec4 m_Ks2{};
+  float m_shininess2{};
+
+  void loadModel(std::string_view pathObj);
+  void loadModel2(std::string_view pathObj);
 };
 
 #endif

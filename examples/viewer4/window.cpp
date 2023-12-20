@@ -25,14 +25,29 @@ void Window::onEvent(SDL_Event const &event) {
     if (event.button.button == SDL_BUTTON_RIGHT) {
       m_trackBallLight.mouseRelease(mousePosition);
     }
-  }
+  }				
   if (event.type == SDL_MOUSEWHEEL) {
     m_zoom += (event.wheel.y > 0 ? -1.0f : 1.0f) / 5.0f;
     m_zoom = glm::clamp(m_zoom, -1.5f, 1.0f);
   }
+
+
+  if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
+      banana1.travado = false;
+}
+  //if (event.type == SDL_KEYUP) {
+    // if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
+    //  m_dollySpeed = 0.0f;
+  //}
 }
 
 void Window::onCreate() {
+
+// inicia a posicao da camera e da banana na posicao inicial:
+  glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
+  banana1.m_position = posicaoInicial;
+  
   auto const assetsPath{abcg::Application::getAssetsPath()};
 
   abcg::glClearColor(0, 0, 0, 1);
@@ -48,9 +63,10 @@ void Window::onCreate() {
   }
 
   // Load default model
-  loadModel(assetsPath + "roman_lamp.obj");
+  loadModel(assetsPath + "cannon.obj");
+  loadModel2(assetsPath + "banana.obj");
   m_mappingMode = 3; // "From mesh" option
-
+  m_mappingMode2 = 3;
   // Initial trackball spin
   m_trackBallModel.setAxis(glm::normalize(glm::vec3(1, 1, 1)));
   m_trackBallModel.setVelocity(0.1f);
@@ -61,8 +77,8 @@ void Window::loadModel(std::string_view path) {
 
   m_model.destroy();
 
-  m_model.loadDiffuseTexture(assetsPath + "maps/pattern.png");
-  m_model.loadObj(path);
+  m_model.loadDiffuseTexture(assetsPath + "maps/cannon.jpg");
+  m_model.loadObj(assetsPath + "cannon.obj");
   m_model.setupVAO(m_programs.at(m_currentProgramIndex));
   m_trianglesToDraw = m_model.getNumTriangles();
 
@@ -71,6 +87,23 @@ void Window::loadModel(std::string_view path) {
   m_Kd = m_model.getKd();
   m_Ks = m_model.getKs();
   m_shininess = m_model.getShininess();
+}
+
+void Window::loadModel2(std::string_view path) {
+  auto const assetsPath{abcg::Application::getAssetsPath()};
+
+  modelo_banana.destroy();
+
+  modelo_banana.loadDiffuseTexture(assetsPath + "maps/textura_banana.jpg");
+  modelo_banana.loadObj(assetsPath + "banana.obj");
+  modelo_banana.setupVAO(m_programs.at(m_currentProgramIndex));
+  m_trianglesToDraw2 = modelo_banana.getNumTriangles();
+
+  // Use material properties from the loaded model
+  m_Ka2 = modelo_banana.getKa();
+  m_Kd2 = modelo_banana.getKd();
+  m_Ks2 = modelo_banana.getKs();
+  m_shininess2 = modelo_banana.getShininess();
 }
 
 void Window::onPaint() {
@@ -112,8 +145,6 @@ void Window::onPaint() {
   abcg::glUniform4fv(IdLoc, 1, &m_Id.x);
   abcg::glUniform4fv(IsLoc, 1, &m_Is.x);
 
-  // Set uniform variables for the current model
-  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
 
   auto const modelViewMatrix{glm::mat3(m_viewMatrix * m_modelMatrix)};
   auto const normalMatrix{glm::inverseTranspose(modelViewMatrix)};
@@ -124,12 +155,60 @@ void Window::onPaint() {
   abcg::glUniform4fv(KsLoc, 1, &m_Ks.x);
   abcg::glUniform1f(shininessLoc, m_shininess);
 
+// ======== Desloca banana ===============================================================================
+
+  // Set uniform variables for the current model
+
+
+  glm::mat4 model{1.0f};
+// Altera a matriz para fora do trackball:
+  glm::mat4 modelo{1.0f};  
+  modelo = glm::translate(modelo, banana1.m_position); // -3.5f no z (ultimo termo do vetor)
+  modelo = glm::rotate(modelo, glm::radians(45.0f), glm::vec3(0, 1, 0));
+  modelo = glm::scale(modelo, glm::vec3(1.0f));
+
+// =======================================================================================================
+
+
+// Desenha deslocado: (apenas se a banana estiver na origem, "travada")
+  if (banana1.travado == false) {
+  m_modelMatrixLocation2 = abcg::glGetUniformLocation(program, "modelMatrix");
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
+  }
+  else {
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
+  }
+  modelo_banana.render(m_trianglesToDraw2);
+  //m_model.render(m_trianglesToDraw);
+
+// Desenha no trackball:
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &m_modelMatrix[0][0]);
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
   m_model.render(m_trianglesToDraw);
 
   abcg::glUseProgram(0);
 }
 
 void Window::onUpdate() {
+
+  auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
+
+  if (banana1.m_position.z <= -6.0) {
+      banana1.m_position.z = 0.0;
+      banana1.m_position.y = 0.0;
+      banana1.travado = true;
+  }
+
+  if (banana1.travado == false) {
+  banana1.m_position.z = banana1.m_position.z - deltaTime;
+  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime;
+  }
+  
+  else {
+    m_modelMatrixLocation2 = m_modelMatrixLocation;
+  }
+
   m_modelMatrix = m_trackBallModel.getRotation();
 
   m_viewMatrix =
