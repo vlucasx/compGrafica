@@ -194,15 +194,23 @@ void Window::onUpdate() {
 
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
 
-  if (banana1.m_position.z <= -6.0) {
+  if (banana1.m_position.z <= -6.0 || banana1.m_position.z >= 6.0 || banana1.m_position.x <= -6.0 || banana1.m_position.x >= 6.0 || banana1.m_position.y <= -6.0 || banana1.m_position.y >= 6.0 ) {
       banana1.m_position.z = 0.0;
       banana1.m_position.y = 0.0;
+      banana1.m_position.x = 0.0;
       banana1.travado = true;
   }
 
   if (banana1.travado == false) {
-  banana1.m_position.z = banana1.m_position.z - deltaTime;
-  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime;
+  banana1.orientacaoFinal = banana1.orientacao;
+
+  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x * deltaTime;
+  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y * deltaTime;
+  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z * deltaTime;
+
+
+  //banana1.m_position.z = banana1.m_position.z - deltaTime;
+  //banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime;
   }
   
   else {
@@ -210,7 +218,7 @@ void Window::onUpdate() {
   }
 
   m_modelMatrix = m_trackBallModel.getRotation();
-
+  banana1.orientacao = m_modelMatrix[2];
   m_viewMatrix =
       glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f + m_zoom),
                   glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));

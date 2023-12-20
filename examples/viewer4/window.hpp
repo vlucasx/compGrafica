@@ -26,6 +26,9 @@ private:
     struct Banana {
     glm::vec3 m_position{};
     glm::vec3 m_rotationAxis{};
+    glm::vec3 orientacao{};
+    glm::vec3 orientacaoFinal{};
+
     bool travado = true;
   };
 
