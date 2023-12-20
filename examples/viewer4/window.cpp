@@ -62,7 +62,7 @@ void Window::onCreate() {
     m_programs.push_back(program);
   }
 
-  // Load default model
+  // Carrega os modelos
   loadModel(assetsPath + "cannon.obj");
   loadModel2(assetsPath + "banana.obj");
   m_mappingMode = 3; // "From mesh" option
@@ -171,7 +171,7 @@ void Window::onPaint() {
 
 
 // Desenha deslocado: (apenas se a banana estiver na origem, "travada")
-  if (banana1.travado == false) {
+  if (banana1.travado == true) {
   m_modelMatrixLocation2 = abcg::glGetUniformLocation(program, "modelMatrix");
   abcg::glUniformMatrix4fv(m_modelMatrixLocation2, 1, GL_FALSE, &modelo[0][0]);
   }
@@ -477,6 +477,7 @@ void Window::onResize(glm::ivec2 const &size) {
 
 void Window::onDestroy() {
   m_model.destroy();
+  modelo_banana.destroy();
   for (auto const &program : m_programs) {
     abcg::glDeleteProgram(program);
   }
