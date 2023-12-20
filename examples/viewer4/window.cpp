@@ -193,7 +193,7 @@ void Window::onPaint() {
 void Window::onUpdate() {
 
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
-
+// se sair do raio de 6.0, volta para a origem:
   if (banana1.m_position.z <= -6.0 || banana1.m_position.z >= 6.0 || banana1.m_position.x <= -6.0 || banana1.m_position.x >= 6.0 || banana1.m_position.y <= -6.0 || banana1.m_position.y >= 6.0 ) {
       banana1.m_position.z = 0.0;
       banana1.m_position.y = 0.0;
@@ -204,17 +204,24 @@ void Window::onUpdate() {
   if (banana1.travado == false) {
   banana1.orientacaoFinal = banana1.orientacao;
 
-  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x * deltaTime;
-  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y * deltaTime;
-  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z * deltaTime;
+  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *2* deltaTime;
+  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *2* deltaTime;
+  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *2* deltaTime;
 
-
-  //banana1.m_position.z = banana1.m_position.z - deltaTime;
-  //banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime;
+// gravidade:
+  banana1.m_position.y = banana1.m_position.y - 3*deltaTime*deltaTime;
   }
   
   else {
-    m_modelMatrixLocation2 = m_modelMatrixLocation;
+    if (banana1.voltouOrigem == false) {
+      m_modelMatrixLocation2 = m_modelMatrixLocation;
+      banana1.voltouOrigem = true;
+    }
+
+// desloca banana para a ponta do canhao
+    banana1.m_position.x = banana1.orientacao.x * 1.05;
+    banana1.m_position.y = banana1.orientacao.y * 1.05;
+    banana1.m_position.z = banana1.orientacao.z * 1.05;
   }
 
   m_modelMatrix = m_trackBallModel.getRotation();

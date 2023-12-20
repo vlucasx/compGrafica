@@ -28,6 +28,7 @@ private:
     glm::vec3 m_rotationAxis{};
     glm::vec3 orientacao{};
     glm::vec3 orientacaoFinal{};
+    bool voltouOrigem = true;
 
     bool travado = true;
   };
