@@ -32,18 +32,19 @@ que é responsável por controlar o disparo da banana.
 ```
 
 
-Carrega os modelos do canhão e da banana e seus respectivos modos de mapeamento:
+Carrega os modelos do canhão, da banana e do alvo e seus respectivos modos de mapeamento:
 
 ```
   loadModel(assetsPath + "cannon.obj");
   loadModel2(assetsPath + "banana.obj");
+  loadModel3(assetsPath + "alvo.obj");
   m_mappingMode = 3;
   m_mappingMode2 = 3;
   ```
 
 ### metodo onPaint():
-Renderiza a banana dentro do trackball, acompanhando a orientacao do canhão, caso a variável "travada" = true.
-Renderiza também o canhão.
+Renderiza a banana e o canhao dentro do trackball. A banana acompanha a orientacao do canhão caso a variável "travada" = true.
+Renderiza também o alvo, fora do trackball.
 
 ### metodo onUpdate():
 Se a banana sair do raio de 6.0, volta para a origem para ser atirada novamente:
