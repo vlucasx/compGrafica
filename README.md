@@ -20,7 +20,9 @@ Foi adicionando o trecho
 }
 ```
 
-que é responsável por controlar o disparo da banana.
+que é responsável por controlar o disparo da banana ao pressionar a barra de espaco.
+
+E possivel utilizar o mouse para direcionar o canhao bem como o scroll para regular o zoom.
 
 ### método onCreate():
 
