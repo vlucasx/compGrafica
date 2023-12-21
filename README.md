@@ -22,7 +22,7 @@ Foi adicionando o trecho
 
 que é responsável por controlar o disparo da banana ao pressionar a barra de espaco.
 
-E possivel utilizar o mouse para direcionar o canhao bem como o scroll para regular o zoom.
+É possivel utilizar o mouse para direcionar o canhão, bem como o scroll para regular o zoom.
 
 ### método onCreate():
 
@@ -45,7 +45,7 @@ Carrega os modelos do canhão, da banana e do alvo e seus respectivos modos de m
   ```
 
 ### metodo onPaint():
-Renderiza a banana e o canhao dentro do trackball. A banana acompanha a orientacao do canhão caso a variável "travada" = true.
+Renderiza a banana e o canhão dentro do trackball. A banana acompanha a orientação do canhão caso a variável "travada" = true.
 Renderiza também o alvo, fora do trackball.
 
 ### metodo onUpdate():
@@ -58,7 +58,7 @@ Se a banana sair do raio de 6.0, volta para a origem para ser atirada novamente:
       banana1.travado = true;
   }
 ```
-Caso a banana não esteja travada, ou seja, esteja fora da origem, a mesma terá sua posição atualizada em função do tempo de forma proporcional ás componentes vetoriais que descrevem sua orientação no momento do disparo, que coincidem com a orientação do canhão naquele momento. O resultado é um deslocamento com velocidade constante na direção e sentido apontado pelo vetor de orientacao do canhão no momento do disparo.
+Caso a banana não esteja travada, ou seja, esteja fora da origem, a mesma terá sua posição atualizada em função do tempo de forma proporcional às componentes vetoriais que descrevem sua orientação no momento do disparo, que coincidem com a orientação do canhão naquele momento. O resultado é um deslocamento com velocidade constante na direção e sentido apontado pelo vetor de orientacao do canhão no momento do disparo.
 
 O método adiciona também um componente exponencial no decremento da posição em y da banana, para simular uma forca gravitacional:
 ```
