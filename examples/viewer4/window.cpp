@@ -243,7 +243,7 @@ void Window::onUpdate() {
   banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *14* deltaTime;
 
 // gravidade:
-  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime - 0.5;
+  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime - 0.1;
   }
   
   else {
