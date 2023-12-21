@@ -46,7 +46,7 @@ void Window::onCreate() {
 
 // inicia a posicao da camera e da banana na posicao inicial:
   glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
-  glm::vec3 posicaoAlvo(0.0f, 4.0f, -10.0f);
+  glm::vec3 posicaoAlvo(0.0f, 6.0f, -10.0f);
   banana1.m_position = posicaoInicial;
   alvo1.m_position = posicaoAlvo;
   
@@ -238,12 +238,12 @@ void Window::onUpdate() {
   if (banana1.travado == false) {
   banana1.orientacaoFinal = banana1.orientacao;
 
-  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *6* deltaTime;
-  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *6* deltaTime;
-  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *6* deltaTime;
+  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *14* deltaTime;
+  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *14* deltaTime;
+  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *14* deltaTime;
 
 // gravidade:
-  banana1.m_position.y = banana1.m_position.y - 15*deltaTime*deltaTime;
+  banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime - 0.5;
   }
   
   else {
