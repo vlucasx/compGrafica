@@ -238,9 +238,9 @@ void Window::onUpdate() {
   if (banana1.travado == false) {
   banana1.orientacaoFinal = banana1.orientacao;
 
-  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *14* deltaTime;
-  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *14* deltaTime;
-  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *14* deltaTime;
+  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *18* deltaTime;
+  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *18* deltaTime;
+  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *18* deltaTime;
 
 // gravidade:
   banana1.m_position.y = banana1.m_position.y - deltaTime*deltaTime - 0.1;
