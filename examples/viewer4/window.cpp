@@ -46,7 +46,7 @@ void Window::onCreate() {
 
 // inicia a posicao da camera e da banana na posicao inicial:
   glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
-  glm::vec3 posicaoAlvo(0.0f, 1.7f, -2.0f);
+  glm::vec3 posicaoAlvo(0.0f, 4.0f, -10.0f);
   banana1.m_position = posicaoInicial;
   alvo1.m_position = posicaoAlvo;
   
@@ -213,7 +213,8 @@ void Window::onPaint() {
 
   glm::mat4 modelo3{1.0f};
   modelo3 = glm::translate(modelo3, alvo1.m_position);
-  modelo3 = glm::rotate(modelo3, glm::radians(25.0f), glm::vec3(0, 1, 0));
+  modelo3 = glm::rotate(modelo3, glm::radians(30.0f), glm::vec3(0, 1, 0));
+  modelo3 = glm::scale(modelo3, glm::vec3(2.0f));
 
 
   m_modelMatrixLocation3 = abcg::glGetUniformLocation(program, "modelMatrix");
@@ -226,8 +227,8 @@ void Window::onPaint() {
 void Window::onUpdate() {
 
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
-// se sair do raio de 6.0, volta para a origem:
-  if (banana1.m_position.z <= -6.0 || banana1.m_position.z >= 6.0 || banana1.m_position.x <= -6.0 || banana1.m_position.x >= 6.0 || banana1.m_position.y <= -6.0 || banana1.m_position.y >= 6.0 ) {
+// se sair do raio de 12.0, volta para a origem:
+  if (banana1.m_position.z <= -12.0 || banana1.m_position.z >= 12.0 || banana1.m_position.x <= -12.0 || banana1.m_position.x >= 12.0 || banana1.m_position.y <= -12.0 || banana1.m_position.y >= 12.0 ) {
       banana1.m_position.z = 0.0;
       banana1.m_position.y = 0.0;
       banana1.m_position.x = 0.0;
@@ -237,12 +238,12 @@ void Window::onUpdate() {
   if (banana1.travado == false) {
   banana1.orientacaoFinal = banana1.orientacao;
 
-  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *2* deltaTime;
-  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *2* deltaTime;
-  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *2* deltaTime;
+  banana1.m_position.x = banana1.m_position.x + banana1.orientacaoFinal.x *6* deltaTime;
+  banana1.m_position.y = banana1.m_position.y + banana1.orientacaoFinal.y *6* deltaTime;
+  banana1.m_position.z = banana1.m_position.z + banana1.orientacaoFinal.z *6* deltaTime;
 
 // gravidade:
-  banana1.m_position.y = banana1.m_position.y - 3*deltaTime*deltaTime;
+  banana1.m_position.y = banana1.m_position.y - 15*deltaTime*deltaTime;
   }
   
   else {
@@ -384,7 +385,7 @@ void Window::onPaintUI() {
                         gsl::narrow<float>(m_viewportSize.y)};
       if (currentIndex == 0) {
         m_projMatrix =
-            glm::perspective(glm::radians(45.0f), aspect, 0.1f, 5.0f);
+            glm::perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
       } else {
         m_projMatrix =
             glm::ortho(-1.0f * aspect, 1.0f * aspect, -1.0f, 1.0f, 0.1f, 5.0f);
