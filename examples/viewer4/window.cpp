@@ -46,7 +46,9 @@ void Window::onCreate() {
 
 // inicia a posicao da camera e da banana na posicao inicial:
   glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
+  glm::vec3 posicaoAlvo(0.0f, 1.7f, -2.0f);
   banana1.m_position = posicaoInicial;
+  alvo1.m_position = posicaoAlvo;
   
   auto const assetsPath{abcg::Application::getAssetsPath()};
 
@@ -65,6 +67,8 @@ void Window::onCreate() {
   // Carrega os modelos
   loadModel(assetsPath + "cannon.obj");
   loadModel2(assetsPath + "banana.obj");
+  loadModel3(assetsPath + "alvo.obj");
+
   m_mappingMode = 3; // "From mesh" option
   m_mappingMode2 = 3;
   // Initial trackball spin
@@ -104,6 +108,23 @@ void Window::loadModel2(std::string_view path) {
   m_Kd2 = modelo_banana.getKd();
   m_Ks2 = modelo_banana.getKs();
   m_shininess2 = modelo_banana.getShininess();
+}
+
+void Window::loadModel3(std::string_view path) {
+  auto const assetsPath{abcg::Application::getAssetsPath()};
+
+  modeloAlvo.destroy();
+
+  modeloAlvo.loadDiffuseTexture(assetsPath + "maps/textura_alvo.jpg");
+  modeloAlvo.loadObj(assetsPath + "alvo.obj");
+  modeloAlvo.setupVAO(m_programs.at(m_currentProgramIndex));
+  m_trianglesToDraw3 = modeloAlvo.getNumTriangles();
+
+  // Use material properties from the loaded model
+  m_Ka3 = modeloAlvo.getKa();
+  m_Kd3 = modeloAlvo.getKd();
+  m_Ks3 = modeloAlvo.getKs();
+  m_shininess3 = modeloAlvo.getShininess();
 }
 
 void Window::onPaint() {
@@ -187,6 +208,18 @@ void Window::onPaint() {
   abcg::glUniformMatrix4fv(m_modelMatrixLocation, 1, GL_FALSE, &model[0][0]);
   m_model.render(m_trianglesToDraw);
 
+
+//=========== Desenha alvo ======================
+
+  glm::mat4 modelo3{1.0f};
+  modelo3 = glm::translate(modelo3, alvo1.m_position);
+  modelo3 = glm::rotate(modelo3, glm::radians(25.0f), glm::vec3(0, 1, 0));
+
+
+  m_modelMatrixLocation3 = abcg::glGetUniformLocation(program, "modelMatrix");
+  abcg::glUniformMatrix4fv(m_modelMatrixLocation3, 1, GL_FALSE, &modelo3[0][0]);
+
+  modeloAlvo.render(m_trianglesToDraw3);
   abcg::glUseProgram(0);
 }
 

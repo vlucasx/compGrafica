@@ -21,6 +21,7 @@ private:
 
   GLint m_modelMatrixLocation{};
   GLint m_modelMatrixLocation2{};
+  GLint m_modelMatrixLocation3{};
 
 
     struct Banana {
@@ -33,14 +34,21 @@ private:
     bool travado = true;
   };
 
-  Banana banana1, banana2;
+  Banana banana1;
+
+  struct Alvo {
+    glm::vec3 m_position{};
+  };
+
+  Alvo alvo1;
   // ========================================
 
   glm::ivec2 m_viewportSize{};
 
-  Model m_model, modelo_banana;
+  Model m_model, modelo_banana, modeloAlvo;
   int m_trianglesToDraw{};
   int m_trianglesToDraw2{};
+  int m_trianglesToDraw3{};
 
   TrackBall m_trackBallModel;
   TrackBall m_trackBallLight;
@@ -80,8 +88,18 @@ private:
   glm::vec4 m_Ks2{};
   float m_shininess2{};
 
+  glm::vec4 m_lightDir3{-1.0f, -1.0f, -1.0f, 0.0f};
+  glm::vec4 m_Ia3{1.0f};
+  glm::vec4 m_Id3{1.0f};
+  glm::vec4 m_Is3{1.0f};
+  glm::vec4 m_Ka3{};
+  glm::vec4 m_Kd3{};
+  glm::vec4 m_Ks3{};
+  float m_shininess3{};
+
   void loadModel(std::string_view pathObj);
   void loadModel2(std::string_view pathObj);
+  void loadModel3(std::string_view pathObj);
 };
 
 #endif
