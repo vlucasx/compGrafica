@@ -1,7 +1,7 @@
 
 
 
-# Canhao de Banana
+# Canhão de Banana
 
 - Nome: Lucas Guerra Silvestre 
 - RA: 11201721549
@@ -9,7 +9,7 @@
 
 ## Arquivo window.cpp
 
-### metodo onEvent():
+### método onEvent():
 
 Foi adicionando o trecho
 
@@ -20,11 +20,11 @@ Foi adicionando o trecho
 }
 ```
 
-que e responsavel por controlar o disparo da banana.
+que é responsável por controlar o disparo da banana.
 
-### metodo onCreate():
+### método onCreate():
 
-// inicia a posicao da camera e da banana na posicao inicial:
+// inicia a posição da câmera e da banana na posição inicial:
 
 ```
   glm::vec3 posicaoInicial(0.0f, 0.0f, 0.0f);
@@ -32,7 +32,7 @@ que e responsavel por controlar o disparo da banana.
 ```
 
 
-Carrega os modelos do canhao e da banana e seus respectivos modos de mapeamento:
+Carrega os modelos do canhão e da banana e seus respectivos modos de mapeamento:
 
 ```
   loadModel(assetsPath + "cannon.obj");
@@ -42,8 +42,8 @@ Carrega os modelos do canhao e da banana e seus respectivos modos de mapeamento:
   ```
 
 ### metodo onPaint():
-Renderiza a banana dentro do trackball, acompanhando a orientacao do canhao, caso a variavel "travada" = true.
-Renderiza tambem o canhao.
+Renderiza a banana dentro do trackball, acompanhando a orientacao do canhão, caso a variável "travada" = true.
+Renderiza também o canhão.
 
 ### metodo onUpdate():
 Se a banana sair do raio de 6.0, volta para a origem para ser atirada novamente:
@@ -55,12 +55,12 @@ Se a banana sair do raio de 6.0, volta para a origem para ser atirada novamente:
       banana1.travado = true;
   }
 ```
-Caso a banana nao esteja travada, ou seja, esteja fora da origem, a mesma tera sua posicao atualizada em funcao do tempo de forma proporcional as componentes vetoriais que descrevem sua orientacao no momento do disparo, que coincidem com a orientacao do canhao naquele momento. O resultado e um deslocamento a velocidade constante na direcao e sentido apontado pelo vetor de orientacao do canhao no momento do disparo.
+Caso a banana não esteja travada, ou seja, esteja fora da origem, a mesma terá sua posição atualizada em função do tempo de forma proporcional ás componentes vetoriais que descrevem sua orientação no momento do disparo, que coincidem com a orientação do canhão naquele momento. O resultado é um deslocamento com velocidade constante na direção e sentido apontado pelo vetor de orientacao do canhão no momento do disparo.
 
-O metodo adiciona tambem um componente exponencial no decremento da posicao em y da banana, para simular uma forca gravitacional:
+O método adiciona também um componente exponencial no decremento da posição em y da banana, para simular uma forca gravitacional:
 ```
   banana1.m_position.y = banana1.m_position.y - 3*deltaTime*deltaTime;
 
 ```
 
-Por fim, quando a banana volta para a origem, sua posicao e realocada para a ponta do canhao para o proximo disparo.
+Por fim, quando a banana volta para a origem, sua posição é realocada para a ponta do canhão para o próximo disparo.
